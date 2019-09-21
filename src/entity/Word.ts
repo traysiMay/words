@@ -7,4 +7,7 @@ export class Word {
 
   @Column()
   word: string;
+
+  @Column()
+  vote: number;
 }

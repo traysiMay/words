@@ -1,14 +1,18 @@
-import React, { useContext, useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { useEffect, useContext, useState } from "react";
 import { WordContext } from "./Context";
 
 function App() {
-  const { words, socket } = useContext(WordContext);
+  const { words, socket, votes } = useContext(WordContext);
   const [word, setWord] = useState("");
+  // const [forceUpdate, _] = useState()
+  console.log(votes)
+  // useEffect(() => {
+  //   console.log('hi')
+  //   _(votes)
+  // }, [votes])
 
-  const addWord = () => {
-    console.log("hi");
+  const addWord = (e) => {
+    e.preventDefault()
     socket.emit("addword", word);
   };
 
@@ -16,26 +20,19 @@ function App() {
     setWord(e.target.value);
   };
 
+  const voteWord = w => {
+    socket.emit("voteword", w)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          {words.map(w => (
-            <div>{w}</div>
-          ))}
-          <input onChange={handleWord} />
-          <button onClick={addWord}>HIT ME</button>
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {words.map(w => (
+        <div key={w} > <div >{w}-{votes[w]}</div> <button onClick={() => voteWord(w)}>+</button></div>
+      ))}
+      <form>
+        <input onChange={handleWord} />
+        <button type="submit" onClick={addWord}>HIT ME</button>
+      </form>
     </div>
   );
 }
