@@ -1,11 +1,11 @@
 import React, { useEffect, useContext, useState } from "react";
 import { WordContext } from "./Context";
+import D3 from "./D3";
 
 function App() {
   const { words, socket, votes } = useContext(WordContext);
   const [word, setWord] = useState("");
   // const [forceUpdate, _] = useState()
-  console.log(votes)
   // useEffect(() => {
   //   console.log('hi')
   //   _(votes)
@@ -26,6 +26,7 @@ function App() {
 
   return (
     <div className="App">
+      <D3 data={votes} />
       {words.map(w => (
         <div key={w} > <div >{w}-{votes[w]}</div> <button onClick={() => voteWord(w)}>+</button></div>
       ))}

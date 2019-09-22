@@ -12,7 +12,11 @@ createConnection().then(connection => {
   let http = require("http").Server(app);
   let io = require("socket.io")(http);
   app.use(bodyParser.json());
-  app.use(cors())
+  app.use(function (request, response, next) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
   //   app.get("/", (req: any, res: any) => {
   //     res.sendFile(path.resolve("./client/index.html"));
   //   });

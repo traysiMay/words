@@ -3,14 +3,18 @@ import io from "socket.io-client";
 
 export const WordContext = React.createContext();
 
-const server = "http://localhost:4400";
+// const server = "http://localhost:4400";
+const server = "https://eng.med--lab.org"
 const getWords = async () => {
   const response = await fetch(`${server}/words`)
   const data = await response.json()
+  console.log(data)
   return data;
 }
 
-const socket = io(server);
+const socket = io(server, { path: '/words/' });
+console.log(socket)
+// const socket = 'fuck';
 
 const WordProvider = ({ children }) => {
   const [words, setWords] = useState([])
