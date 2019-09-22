@@ -9,7 +9,7 @@ import { Word } from "./entity/Word";
 
 createConnection().then(connection => {
   const app = express();
-  app.use(cors({ origin: 'http://localhost:3000' }))
+  app.use(cors({ origin: '*' }))
   // const server = app.listen(4400);
   var server = require('http').Server(app);
   var io = require('socket.io')(server);
