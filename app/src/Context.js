@@ -3,11 +3,11 @@ import io from "socket.io-client";
 
 export const WordContext = React.createContext();
 
-const server = "http://localhost:4400";
-// const server = "https://eng.med--lab.org"
+// const server = "http://localhost:4400";
+const server = "https://eng.med--lab.org"
 // const coket = "https://eng.med--lab.org/words"
 const getWords = async () => {
-  const response = await fetch(`${server}/words`)
+  const response = await fetch(`${server}/words/`)
   const data = await response.json()
   console.log(data)
   return data;
