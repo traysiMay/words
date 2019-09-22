@@ -9,18 +9,20 @@ import { Word } from "./entity/Word";
 
 createConnection().then(connection => {
   const app = express();
+  app.use(cors({ origin: 'http://localhost:3000' }))
   // const server = app.listen(4400);
   var server = require('http').Server(app);
   var io = require('socket.io')(server);
+  io.origins(['http://localhost:3000'])
 
   server.listen(4400, '127.0.0.1');
   // let http = require("http").Server(app);
-  app.use(function (req, res, next) {
+  // app.use(function (req, res, next) {
 
-    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-    res.header('Access-Control-Allow-Credentials', 'true');
-    next();
-  });
+  //   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  //   res.header('Access-Control-Allow-Credentials', 'true');
+  //   next();
+  // });
   // let io = require("socket.io").listen(server);
   app.use(bodyParser.json());
 
