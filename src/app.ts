@@ -16,7 +16,7 @@ createConnection().then(connection => {
 
   server.listen(4400, '127.0.0.1');
   // let http = require("http").Server(app);
-  app.use(function (req, res, next) {
+  server.use(function (req, res, next) {
 
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header('Access-Control-Allow-Credentials', 'true');
