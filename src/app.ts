@@ -15,6 +15,8 @@ createConnection().then(connection => {
   app.use(function (request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    request.header("Access-Control-Allow-Credentials: false")
+
     next();
   });
   //   app.get("/", (req: any, res: any) => {
