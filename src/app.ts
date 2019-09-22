@@ -10,15 +10,14 @@ import { Word } from "./entity/Word";
 createConnection().then(connection => {
   const app = express();
   let http = require("http").Server(app);
-  let io = require("socket.io")(http);
-  app.use(bodyParser.json());
   app.use(function (request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    request.header("Access-Control-Allow-Credentials: false")
-
     next();
   });
+  let io = require("socket.io")(http);
+  app.use(bodyParser.json());
+
   //   app.get("/", (req: any, res: any) => {
   //     res.sendFile(path.resolve("./client/index.html"));
   //   });
