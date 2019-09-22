@@ -9,7 +9,11 @@ import { Word } from "./entity/Word";
 
 createConnection().then(connection => {
   const app = express();
-  const server = app.listen(4400);
+  // const server = app.listen(4400);
+  var server = require('http').Server(app);
+  var io = require('socket.io')(server);
+
+  server.listen(4400);
   // let http = require("http").Server(app);
   app.use(function (req, res, next) {
 
@@ -17,7 +21,7 @@ createConnection().then(connection => {
     res.header('Access-Control-Allow-Credentials', 'true');
     next();
   });
-  let io = require("socket.io").listen(server);
+  // let io = require("socket.io").listen(server);
   app.use(bodyParser.json());
 
   //   app.get("/", (req: any, res: any) => {

@@ -5,6 +5,7 @@ export const WordContext = React.createContext();
 
 // const server = "http://localhost:4400";
 const server = "https://eng.med--lab.org"
+const coket = "https://eng.med--lab.org/words"
 const getWords = async () => {
   const response = await fetch(`${server}/words`)
   const data = await response.json()
@@ -13,6 +14,8 @@ const getWords = async () => {
 }
 
 const socket = io(server, { path: '/words/socket.io' });
+// const socket = io(server);
+
 console.log(socket)
 // const socket = 'fuck';
 
