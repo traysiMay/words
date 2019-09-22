@@ -13,7 +13,7 @@ createConnection().then(connection => {
   var server = require('http').Server(app);
   var io = require('socket.io')(server);
 
-  server.listen(4400);
+  server.listen(4400, '127.0.0.1');
   // let http = require("http").Server(app);
   app.use(function (req, res, next) {
 
