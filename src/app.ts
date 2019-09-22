@@ -10,9 +10,10 @@ import { Word } from "./entity/Word";
 createConnection().then(connection => {
   const app = express();
   let http = require("http").Server(app);
-  app.use(function (request, response, next) {
-    response.header("Access-Control-Allow-Origin", "*");
-    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  app.use(function (req, res, next) {
+
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header('Access-Control-Allow-Credentials', true);
     next();
   });
   let io = require("socket.io")(http);
