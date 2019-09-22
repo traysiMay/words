@@ -33,6 +33,12 @@ createConnection().then(connection => {
     res.send(words);
   });
 
+  app.get("/socket.io", async (req: Request, res: Response) => {
+    const wordRepo = getRepository(Word);
+    const words = await wordRepo.find();
+    res.send(words);
+  });
+
   io.on("connection", function (socket: any) {
     console.log("a user connected");
     socket.on('disconnect', function () {
