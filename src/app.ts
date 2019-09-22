@@ -9,14 +9,15 @@ import { Word } from "./entity/Word";
 
 createConnection().then(connection => {
   const app = express();
-  let http = require("http").Server(app);
+  const server = app.listen(4400);
+  // let http = require("http").Server(app);
   app.use(function (req, res, next) {
 
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header('Access-Control-Allow-Credentials', 'true');
     next();
   });
-  let io = require("socket.io")(http);
+  let io = require("socket.io").listen(server);
   app.use(bodyParser.json());
 
   //   app.get("/", (req: any, res: any) => {
@@ -70,7 +71,7 @@ createConnection().then(connection => {
   });
 
 
-  const server = http.listen(4400, function () {
-    console.log("listening on *:4400");
-  });
+  // const server = http.listen(4400, function () {
+  //   console.log("listening on *:4400");
+  // });
 });

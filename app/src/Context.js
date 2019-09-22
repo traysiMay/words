@@ -12,7 +12,7 @@ const getWords = async () => {
   return data;
 }
 
-const socket = io(server, { path: '/words/' });
+const socket = io(server, { path: '/words/socket.io' });
 console.log(socket)
 // const socket = 'fuck';
 
