@@ -4,7 +4,7 @@ import io from "socket.io-client";
 export const WordContext = React.createContext();
 
 let server = "http://localhost:4400";
-server = "https://eng.med--lab.org";
+// server = "https://eng.med--lab.org";
 const getWords = async () => {
   const response = await fetch(`${server}/words/`);
   const data = await response.json();
@@ -12,7 +12,7 @@ const getWords = async () => {
 };
 
 // const socket = io(server);
-const socket = io(server, { path: "/socket.io" });
+const socket = io(server, { path: "/socket.io", transport: ["websocket"] });
 
 const voteReducer = (state, action) => {
   switch (action.type) {

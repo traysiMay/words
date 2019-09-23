@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { WordContext } from "./Context";
 import styled from "styled-components";
 import D3 from "./D3";
@@ -39,10 +39,12 @@ function App() {
   const { wordz, socket, votez } = useContext(WordContext);
   const [color, setColor] = useState("mood");
   const [word, setWord] = useState("");
+  const [raptor, setRaptor] = useState("");
+  const raptorRef = useRef();
 
   const addWord = e => {
     e.preventDefault();
-    socket.emit("addword", word);
+    socket.emit("addword", { word, raptor });
   };
 
   const handleWord = e => {
@@ -57,8 +59,19 @@ function App() {
     setColor(e.target.innerHTML);
   };
 
+  if (!raptor) {
+    return (
+      <div>
+        who are you<input ref={raptorRef}></input>
+        <button onClick={() => setRaptor(raptorRef.current.value)}>
+          submit
+        </button>
+      </div>
+    );
+  }
   return (
     <Container color={Colors[color]}>
+      {raptor}
       <D3 data={votez} />
       <CatContainer>
         <MoodS onClick={changeColor}>mood</MoodS>

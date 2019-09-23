@@ -28,14 +28,8 @@ createConnection().then(connection => {
     socket.on("disconnect", function() {
       console.log("user disconnected");
     });
-    socket.on("message", function(message: any) {
-      console.log(message);
-      // echo the message back down the
-      // websocket connection
-      socket.emit("message", message);
-    });
 
-    socket.on("addword", async word => {
+    socket.on("addword", async ({ word, raptor }) => {
       const wordRepo = getRepository(Word);
       const catRepo = getRepository(Category);
       let fWord = await wordRepo.findOne({ where: { word } });
@@ -46,6 +40,7 @@ createConnection().then(connection => {
         fWord = new Word();
         fWord.word = word;
         fWord.vote = 0;
+        fWord.publisher = raptor;
         fWord.category = await catRepo.findOne({ where: { name: "mood" } });
       }
       await wordRepo.save(fWord);

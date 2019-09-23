@@ -12,6 +12,9 @@ export class Word {
   @Column()
   vote: number;
 
+  @Column()
+  publisher: string;
+
   @ManyToOne(type => Category, category => category.words)
   category: Category;
 }

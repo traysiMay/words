@@ -8,5 +8,5 @@
   "entities": ["src/entity/*.ts"],
   "logging": true,
   "synchronize": true,
-  "dropSchema": false
+  "dropSchema": true
 }
