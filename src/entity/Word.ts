@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Category } from "./Category";
 
 @Entity()
 export class Word {
@@ -10,4 +11,7 @@ export class Word {
 
   @Column()
   vote: number;
+
+  @ManyToOne(type => Category, category => category.words)
+  category: Category;
 }

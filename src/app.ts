@@ -1,18 +1,19 @@
 import * as express from "express";
-import * as cors from "cors"
+import * as cors from "cors";
 import * as socketio from "socket.io";
 import * as path from "path";
 import { Request, Response } from "express";
 import * as bodyParser from "body-parser";
 import { createConnection, getRepository } from "typeorm";
 import { Word } from "./entity/Word";
+import { Category } from "./entity/Category";
 
 createConnection().then(connection => {
   const app = express();
   let http = require("http").Server(app);
   let io = require("socket.io")(http);
   app.use(bodyParser.json());
-  app.use(cors())
+  app.use(cors());
   //   app.get("/", (req: any, res: any) => {
   //     res.sendFile(path.resolve("./client/index.html"));
   //   });
@@ -22,12 +23,12 @@ createConnection().then(connection => {
     res.send(words);
   });
 
-  io.on("connection", function (socket: any) {
+  io.on("connection", function(socket: any) {
     console.log("a user connected");
-    socket.on('disconnect', function () {
-      console.log('user disconnected');
+    socket.on("disconnect", function() {
+      console.log("user disconnected");
     });
-    socket.on("message", function (message: any) {
+    socket.on("message", function(message: any) {
       console.log(message);
       // echo the message back down the
       // websocket connection
@@ -35,36 +36,37 @@ createConnection().then(connection => {
     });
 
     socket.on("addword", async word => {
-      const wordRepo = getRepository(Word)
-      let fWord = await wordRepo.findOne({ where: { word } })
-      if (fWord) {
-        fWord.vote += 1
+      const wordRepo = getRepository(Word);
+      const catRepo = getRepository(Category);
+      let fWord = await wordRepo.findOne({ where: { word } });
+      const isNew = !fWord;
+      if (!isNew) {
+        fWord.vote += 1;
       } else {
-        fWord = new Word()
+        fWord = new Word();
         fWord.word = word;
-        fWord.vote = 0
+        fWord.vote = 0;
+        fWord.category = await catRepo.findOne({ where: { name: "mood" } });
       }
-      await wordRepo.save(fWord)
-      const allWords = await wordRepo.find()
-      io.emit("words", allWords);
+      await wordRepo.save(fWord);
+      io.emit("updateword", { ...fWord, isNew });
       return;
     });
 
     socket.on("voteword", async word => {
-      const wordRepo = getRepository(Word)
-      const fWord = await wordRepo.findOne({ where: { word } })
-      console.log(fWord)
+      const wordRepo = getRepository(Word);
+      const fWord = await wordRepo.findOne({ where: { word } });
+      console.log(fWord);
       if (fWord) {
-        fWord.vote += 1
-        wordRepo.save(fWord)
-        io.emit("updateword", fWord)
+        fWord.vote += 1;
+        wordRepo.save(fWord);
+        io.emit("updateword", fWord);
       }
       return;
-    })
+    });
   });
 
-
-  const server = http.listen(4400, function () {
+  const server = http.listen(4400, function() {
     console.log("listening on *:4400");
   });
 });

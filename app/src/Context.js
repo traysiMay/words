@@ -1,48 +1,66 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import io from "socket.io-client";
 
 export const WordContext = React.createContext();
 
-const server = "http://localhost:4400";
+let server = "http://localhost:4400";
+server = "https://eng.med--lab.org";
 const getWords = async () => {
-  const response = await fetch(`${server}/words`)
-  const data = await response.json()
+  const response = await fetch(`${server}/words/`);
+  const data = await response.json();
   return data;
-}
+};
 
-const socket = io(server);
+// const socket = io(server);
+const socket = io(server, { path: "/socket.io" });
+
+const voteReducer = (state, action) => {
+  switch (action.type) {
+    case "INCREMENT":
+      const {
+        word: { word, vote }
+      } = action;
+      return { ...state, [word]: vote };
+    case "init":
+      return action.newState;
+    default:
+      return state;
+  }
+};
+
+const wordReducer = (state, action) => {
+  switch (action.type) {
+    case "init":
+      return action.words;
+    case "ADD_WORD":
+      return [...state, action.word.word];
+  }
+};
 
 const WordProvider = ({ children }) => {
-  const [words, setWords] = useState([])
-  const [votes, setVotes] = useState({})
-
+  const [wordz, dispatchWord] = useReducer(wordReducer, []);
+  const [votez, dispatchVote] = useReducer(voteReducer, {});
 
   useEffect(() => {
-    console.log('waT')
-    socket.on("words", data => {
-      const votes = {}
-      const wordList = data.map(w => {
-        votes[w.word] = w.vote
-        return w.word
-      })
-      setWords(wordList);
-      setVotes(votes)
+    socket.on("updateword", word => {
+      if (word.isNew) dispatchWord({ type: "ADD_WORD", word });
+      dispatchVote({ type: "INCREMENT", word });
     });
 
     getWords().then(words => {
-      const votes = {}
+      const votes = {};
       const allWords = words.map(w => {
-        votes[w.word] = w.vote
-        return w.word
-      })
-      setWords(allWords)
-      setVotes(votes)
-    })
+        votes[w.word] = w.vote;
+        return w.word;
+      });
+      dispatchWord({ type: "init", words: allWords });
+      dispatchVote({ type: "init", newState: votes });
+    });
     return () => socket.close();
   }, []);
 
   return (
-    <WordContext.Provider value={{ words, socket, votes }}>
+    <WordContext.Provider value={{ wordz, socket, votez }}>
       {children}
     </WordContext.Provider>
   );

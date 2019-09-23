@@ -5,10 +5,8 @@
   "username": "postgres",
   "password": "postgres",
   "database": "words",
-  "entities": [
-    "src/entity/*.ts"
-  ],
+  "entities": ["src/entity/*.ts"],
   "logging": true,
   "synchronize": true,
-  "dropSchema": true
+  "dropSchema": false
 }
