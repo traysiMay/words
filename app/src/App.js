@@ -1,50 +1,22 @@
 import React, { useContext, useRef, useState } from "react";
 import { WordContext } from "./Context";
-import styled from "styled-components";
 import D3 from "./D3";
+import * as chroma from "chroma-js"
 
-const Colors = {
-  mood: "#e159e1",
-  object: "#53e553",
-  sensibility: "#ffff82"
-};
-
-const Container = styled.div`
-  background: ${props => props.color};
-  height: 100%;
-`;
-
-const CatContainer = styled.div`
-  display: grid;
-  grid-auto-flow: column;
-  text-align: center;
-  padding: 0 3rem;
-`;
-
-const CatButton = styled.div`
-  padding: 1rem;
-`;
-const MoodS = styled(CatButton)`
-  background: ${Colors.mood};
-`;
-
-const ObjectS = styled(CatButton)`
-  background: ${Colors.object};
-`;
-const SenseS = styled(CatButton)`
-  background: ${Colors.sensibility};
-`;
+import {IContainer, Container, Raptor, BContainer, LogContainer} from "./styles"
 
 function App() {
   const { wordz, socket, votez } = useContext(WordContext);
   const [color, setColor] = useState("mood");
   const [word, setWord] = useState("");
-  const [raptor, setRaptor] = useState("");
+  const [raptor, setRaptor] = useState(localStorage.getItem('raptor'));
   const raptorRef = useRef();
 
   const addWord = e => {
     e.preventDefault();
-    socket.emit("addword", { word, raptor });
+    if (word.length === 0) return
+    document.getElementById('add-word').value=''
+    socket.emit("addword", { word, raptor, color: chroma.random().hex(), text_color: chroma.random().hex() });
   };
 
   const handleWord = e => {
@@ -56,43 +28,55 @@ function App() {
   };
 
   const changeColor = e => {
+    setColor(chroma.random())
+    return
     setColor(e.target.innerHTML);
   };
+
+  const raptorLogin = () => {
+    localStorage.setItem('raptor', raptorRef.current.value)
+    setRaptor(raptorRef.current.value)
+  }
 
   if (!raptor) {
     return (
       <div>
-        who are you<input ref={raptorRef}></input>
-        <button onClick={() => setRaptor(raptorRef.current.value)}>
-          submit
-        </button>
+        <form><div style={{textAlign:'center'}}>
+        <h1 style={{textAlign:'center'}}>who are you</h1>
+        <input style={{border:'2px black solid'}} ref={raptorRef}></input>
+       <div><button style={{background:'yellow', margin:'1rem'}} onClick={raptorLogin}>
+          corntinue🌽
+        </button></div> </div>
+        </form>
       </div>
     );
   }
+  console.log(votez)
   return (
-    <Container color={Colors[color]}>
-      {raptor}
-      <D3 data={votez} />
-      <CatContainer>
+    <Container onClick={changeColor} color={"black"}>
+      <Raptor>hi {raptor}</Raptor>
+      <D3 socket={socket} data={votez} />
+      {/* <CatContainer>
         <MoodS onClick={changeColor}>mood</MoodS>
         <ObjectS onClick={changeColor}>object</ObjectS>
         <SenseS onClick={changeColor}>sensibility</SenseS>
-      </CatContainer>
+      </CatContainer> */}
+       <form>
+        <IContainer><input id="add-word" placeholder="add a word :)" type="text" onChange={handleWord} /></IContainer>
+        <BContainer><button type="submit" onClick={addWord}>
+          ADD
+        </button></BContainer>
+      </form>
+    <LogContainer>
       {wordz.map(w => (
         <div key={w}>
-          {" "}
           <div>
-            {w}-{votez[w]}
-          </div>{" "}
-          <button onClick={() => voteWord(w)}>+</button>
+            {w} was added by {votez[w] && votez[w].publisher}
+          </div>
+          {/* <BContainer><button onClick={() => voteWord(w)}>+</button></BContainer> */}
         </div>
       ))}
-      <form>
-        <input onChange={handleWord} />
-        <button type="submit" onClick={addWord}>
-          ADD
-        </button>
-      </form>
+</LogContainer>
     </Container>
   );
 }

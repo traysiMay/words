@@ -15,6 +15,12 @@ export class Word {
   @Column()
   publisher: string;
 
+  @Column()
+  color: string;
+
+  @Column()
+  text_color: string;
+
   @ManyToOne(type => Category, category => category.words)
   category: Category;
 }
