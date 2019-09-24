@@ -4,7 +4,7 @@ import io from "socket.io-client";
 export const WordContext = React.createContext();
 
 let server = "http://localhost:4400";
-// server = "https://eng.med--lab.org";
+server = "https://eng.med--lab.org";
 const getWords = async () => {
   const response = await fetch(`${server}/words/`);
   const data = await response.json();
@@ -20,7 +20,7 @@ const voteReducer = (state, action) => {
       const {
         word: { color, text_color, word, vote, publisher }
       } = action;
-      return { ...state, [word]: {vote, color, text_color, publisher} };
+      return { ...state, [word]: { vote, color, text_color, publisher } };
     case "init":
       return action.newState;
     default:
@@ -50,7 +50,12 @@ const WordProvider = ({ children }) => {
     getWords().then(words => {
       const votes = {};
       const allWords = words.map(w => {
-        votes[w.word] = {vote:w.vote, color:w.color, text_color:w.text_color, publisher: w.publisher};
+        votes[w.word] = {
+          vote: w.vote,
+          color: w.color,
+          text_color: w.text_color,
+          publisher: w.publisher
+        };
         return w.word;
       });
       dispatchWord({ type: "init", words: allWords });
