@@ -15,6 +15,10 @@ function App() {
   const addWord = e => {
     e.preventDefault();
     if (word.length === 0) return
+
+    socket.emit("add_particle", chroma.random().hex())
+    return
+
     document.getElementById('add-word').value=''
     socket.emit("addword", { word, raptor, color: chroma.random().hex(), text_color: chroma.random().hex() });
   };

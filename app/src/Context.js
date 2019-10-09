@@ -4,7 +4,7 @@ import io from "socket.io-client";
 export const WordContext = React.createContext();
 
 let server = "http://localhost:4400";
-server = "https://eng.med--lab.org";
+// server = "https://eng.med--lab.org";
 const getWords = async () => {
   const response = await fetch(`${server}/words/`);
   const data = await response.json();

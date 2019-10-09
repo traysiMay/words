@@ -75,6 +75,10 @@ createConnection().then(connection => {
       }
       return
     })
+
+    socket.on('add_particle', async color => {
+      io.emit('particle_added', color)
+    })
   })
 
   const server = http.listen(4400, function() {

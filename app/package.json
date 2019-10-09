@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && copy CNAME build\\CNAME",
+    "build": "react-scripts build && cp CNAME build/CNAME",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",

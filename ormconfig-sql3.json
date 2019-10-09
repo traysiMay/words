@@ -1,8 +1,0 @@
-{
-  "type": "sqlite",
-  "database": "database.sqlite",
-  "entities": ["src/entity/*.ts"],
-  "logging": true,
-  "synchronize": true,
-  "dropSchema": true
-}
