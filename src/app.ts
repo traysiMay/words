@@ -23,9 +23,9 @@ createConnection().then(connection => {
     res.send(words)
   })
 
-  io.on('connection', function(socket: any) {
+  io.on('connection', function (socket: any) {
     console.log('a user connected')
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
       console.log('user disconnected')
     })
 
@@ -79,9 +79,31 @@ createConnection().then(connection => {
     socket.on('add_particle', async color => {
       io.emit('particle_added', color)
     })
+
+    socket.on('change_z', async z => {
+      io.emit('change_z', z)
+    })
+
+    socket.on('change_color', async c => {
+      io.emit('change_color', c)
+    })
+
+    socket.on('change_color1', async c => {
+      io.emit('change_color1', c)
+    })
+
+    socket.on('r', async r => {
+      io.emit('r', r)
+    })
+    socket.on('g', async g => {
+      io.emit('g', g)
+    })
+    socket.on('b', async b => {
+      io.emit('b', b)
+    })
   })
 
-  const server = http.listen(4400, function() {
+  const server = http.listen(4400, function () {
     console.log('listening on *:4400')
   })
 })

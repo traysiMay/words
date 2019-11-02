@@ -1,6 +1,7 @@
 {
   "version": "1.0.0",
   "description": "My webpack project",
+  "homepage": "https://traysimay.github.io/medlab-mirror",
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server"
