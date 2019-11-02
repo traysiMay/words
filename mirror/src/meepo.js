@@ -3,7 +3,10 @@ import { fromEvent } from 'rxjs'
 
 export class SocketService {
   init() {
-    this.socket = io('localhost:4400')
+    // this.socket = io('localhost:4400')
+    // ***** PROD BLEOW
+    const server = "https://eng.med--lab.org";
+    this.socket = io(server, { path: "/socket.io", transport: ["websocket"] });
     return this
   }
 
@@ -15,24 +18,19 @@ export class SocketService {
     return fromEvent(this.socket, 'change_z')
   }
 
-
-  onColor() {
-    return fromEvent(this.socket, 'change_color')
+  onAccent() {
+    return fromEvent(this.socket, 'change_accent')
   }
 
-  onColor1() {
-    return fromEvent(this.socket, 'change_color1')
+  onMainLayer() {
+    return fromEvent(this.socket, 'main_layer')
   }
 
-  onR() {
-    return fromEvent(this.socket, 'r')
+  onOtherLayer() {
+    return fromEvent(this.socket, 'other_layer')
   }
 
-  onG() {
-    return fromEvent(this.socket, 'g')
-  }
-
-  onB() {
-    return fromEvent(this.socket, 'b')
+  onAnotherLayer() {
+    return fromEvent(this.socket, 'another_layer')
   }
 }

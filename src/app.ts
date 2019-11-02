@@ -84,22 +84,18 @@ createConnection().then(connection => {
       io.emit('change_z', z)
     })
 
-    socket.on('change_color', async c => {
-      io.emit('change_color', c)
+    socket.on('change_accent', async c => {
+      io.emit('change_accent', c)
     })
 
-    socket.on('change_color1', async c => {
-      io.emit('change_color1', c)
+    socket.on('main_layer', async r => {
+      io.emit('main_layer', r)
     })
-
-    socket.on('r', async r => {
-      io.emit('r', r)
+    socket.on('other_layer', async g => {
+      io.emit('other_layer', g)
     })
-    socket.on('g', async g => {
-      io.emit('g', g)
-    })
-    socket.on('b', async b => {
-      io.emit('b', b)
+    socket.on('another_layer', async b => {
+      io.emit('another_layer', b)
     })
   })
 

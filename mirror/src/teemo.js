@@ -28,17 +28,16 @@ var r, g, b = 0
 const observable = s.onZ()
 observable.subscribe(v => z = v)
 
-const colorObservable = s.onColor()
-colorObservable.subscribe(c => color = c)
+const colorObservable1 = s.onAccent()
+colorObservable1.subscribe(c => { console.log(c); color1 = c })
 
-const colorObservable1 = s.onColor1()
-colorObservable1.subscribe(c => color1 = c)
-
-const rObservable = s.onR()
+const rObservable = s.onMainLayer()
 rObservable.subscribe(i => r = i)
-const gObservable = s.onG()
+
+const gObservable = s.onOtherLayer()
 gObservable.subscribe(i => g = i)
-const bObservable = s.onB()
+
+const bObservable = s.onAnotherLayer()
 bObservable.subscribe(i => b = i)
 
 const init = () => {
@@ -276,7 +275,6 @@ const draw = t => {
     particles.material.color.b = .5 * (1 + Math.sin(2 * Math.PI * .005 * time))
     // particles.material.color = new THREE.Color(color)
     particles1.material.color = new THREE.Color(color1)
-
 
     const density = 2
     const useCache = parseInt(t) % 2 === 0 // To reduce CPU usage.
